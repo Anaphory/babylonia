@@ -58,7 +58,7 @@ public class ConstantTwoPartDolloModelTest {
 		subst.initByName("frequencies", freq, "deathprob", zero);
 		sites.initByName("shape", "1.0", "substModel", subst);
 		dollo.initByName("tree", tree, "data", alignment, "siteModel", sites, "branchRateModel", new StrictClockModel(),
-				"mu", zero, "integrateGainRate", true, "lam", zero);
+				"mu", zero, "lam", zero, "integrateGainRate", true);
 		als.initByName("tree", tree, "data", alignment, "siteModel", sites, "branchRateModel", new StrictClockModel(),
 				"observationprocess", dollo);
 
