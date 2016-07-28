@@ -21,7 +21,7 @@ import beast.evolution.tree.Tree;
 import beast.util.TreeParser;
 
 @RunWith(Parameterized.class)
-public class ConstantTwoPartDolloModelTest {
+public class ConstantDolloModelTest {
 	@Parameters
 	public static Collection<Object[]> data() {
 		return Arrays.asList(new Object[][] { { 0, 0, 0.0, 1.0 }, { 0, 1, 0.0, 0.0 }, { 1, 0, 0.0, 0.0 },
@@ -32,7 +32,7 @@ public class ConstantTwoPartDolloModelTest {
 	private Double expectedLikelihood;
 	protected AnyTipObservationProcess dollo;
 
-	public ConstantTwoPartDolloModelTest(Integer observation1, Integer observation2, Double aliveInEquilibrium,
+	public ConstantDolloModelTest(Integer observation1, Integer observation2, Double aliveInEquilibrium,
 			Double likelihood) {
 		Tree tree = new TreeParser("(A:1,B:1):1");
 		observations = new int[] { observation1, observation2 };
