@@ -128,7 +128,8 @@ public class AnyTipObservationProcess extends AbstractObservationProcess {
         return -logWeight * lam.getValue(0) / (getAverageRate() * mu.getValue(0));
     }
 
-	private int[] postOrderTraversalList(TreeInterface tree) {
+	public static int[] postOrderTraversalList(TreeInterface tree) {
+		int nodeCount = tree.getNodeCount();
         int idx = nodeCount - 1;
         int cidx = nodeCount - 1;
 
