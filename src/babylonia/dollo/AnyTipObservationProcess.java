@@ -147,7 +147,7 @@ public class AnyTipObservationProcess extends AbstractObservationProcess {
 		return postOrderList;
 	}
 
-	public void setTipNodePatternInclusion() { // These values never change
+	private void setTipNodePatternInclusion() {
         for (int i = 0; i < treeModel.getLeafNodeCount(); i++) {
             Node node = treeModel.getNode(i);
 
