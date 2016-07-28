@@ -29,12 +29,11 @@ package babylonia.dollo;
 
 import beast.core.Description;
 import beast.core.Input;
-import beast.evolution.likelihood.TreeLikelihood;
 import beast.evolution.sitemodel.SiteModel;
 
 
 @Description("Treelikelihood for running the Multi-State Stochastic Dollo process")
-public class ALSTreeLikelihood extends TreeLikelihood {
+public class ALSTreeLikelihood extends AbstractObservationProcess {
     public Input<AbstractObservationProcess> opInput = new Input<AbstractObservationProcess>("observationprocess", "description here");
 
     protected AbstractObservationProcess observationProcess;
@@ -65,5 +64,17 @@ public class ALSTreeLikelihood extends TreeLikelihood {
 		} else {
 			likelihoodCore.getNodePartials(iNode, fPartials);
 		}
+	}
+
+	@Override
+	public double calculateLogTreeWeight() {
+		// TODO Auto-generated method stub
+		return opInput.get().calculateLogTreeWeight();
+	}
+
+	@Override
+	void setNodePatternInclusion() {
+		// TODO Auto-generated method stub
+		opInput.get().setNodePatternInclusion();
 	}
 }

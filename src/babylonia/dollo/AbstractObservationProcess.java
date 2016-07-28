@@ -57,12 +57,6 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 	public Input<Boolean> integrateGainRateInputInput = new Input<Boolean>("integrateGainRate", "description here",
 			false);
 
-	@Override
-	public void initAndValidate() {
-		// TODO Auto-generated method stub
-
-	}
-
 	protected boolean[] nodePatternInclusion;
 	protected boolean[] storedNodePatternInclusion;
 	protected double[] cumLike;
@@ -88,6 +82,13 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 	private double logN;
 	protected boolean nodePatternInclusionKnown = false;
 	BranchRateModel branchRateModel;
+
+	@Override
+	public void initAndValidate() {
+		// ensure TreeLikelihood initialises the partials for tips
+		m_useAmbiguities.setValue(true, this);
+		super.initAndValidate();
+	}
 
 	public void initAndValidate(String Name, TreeInterface treeModel, Alignment patterns, SiteModelInterface siteModel,
 			BranchRateModel branchRateModel, RealParameter mu, RealParameter lam, boolean integrateGainRate) {
