@@ -29,7 +29,6 @@ package babylonia.dollo;
 import java.util.HashSet;
 import java.util.Set;
 
-import beast.core.CalculationNode;
 import beast.core.Citation;
 import beast.core.Description;
 import beast.core.Input;
@@ -38,9 +37,11 @@ import beast.core.parameter.RealParameter;
 import beast.evolution.alignment.Alignment;
 import beast.evolution.branchratemodel.BranchRateModel;
 import beast.evolution.branchratemodel.StrictClockModel;
+import beast.evolution.likelihood.TreeLikelihood;
 import beast.evolution.sitemodel.SiteModel;
+import beast.evolution.sitemodel.SiteModelInterface;
 import beast.evolution.tree.Node;
-import beast.evolution.tree.Tree;
+import beast.evolution.tree.TreeInterface;
 import beast.math.GammaFunction;
 
 @Description("Abstract Observation Process defines how the integration of gain events is done along the tree."
@@ -48,13 +49,7 @@ import beast.math.GammaFunction;
 @Citation("Alekseyenko, AV., Lee, CJ., Suchard, MA. Wagner and Dollo: a stochastic duet"
 		+ "by composing two parsimonious solos. Systematic Biology 2008 57(5): 772 - 784; doi:"
 		+ "10.1080/10635150802434394. PMID: 18853363")
-abstract public class AbstractObservationProcess extends CalculationNode {
-	// Input<String> Name = new Input<String>("Name", "description here");
-	public Input<Tree> treeModelInput = new Input<Tree>("tree", "description here", Validate.REQUIRED);
-	public Input<Alignment> patternsInput = new Input<Alignment>("data", "description here", Validate.REQUIRED);
-	public Input<SiteModel> siteModelInput = new Input<SiteModel>("siteModel", "description here", Validate.REQUIRED);
-	public Input<BranchRateModel> branchRateModeInput = new Input<BranchRateModel>("branchRateModel",
-			"description here");
+abstract public class AbstractObservationProcess extends TreeLikelihood {
 	public Input<RealParameter> muInput = new Input<RealParameter>("mu",
 			"instantaneous per capita loss rate of the character", Validate.REQUIRED);
 	public Input<RealParameter> lamInput = new Input<RealParameter>("lam", "instantaneous rate of the Poisson process"
@@ -76,7 +71,7 @@ abstract public class AbstractObservationProcess extends CalculationNode {
 	protected int nodeCount;
 	protected int patternCount;
 	protected int stateCount;
-	protected Tree treeModel;
+	protected TreeInterface treeModel;
 	protected Alignment patterns;
 	protected int[] patternWeights;
 	protected RealParameter mu;
@@ -94,14 +89,14 @@ abstract public class AbstractObservationProcess extends CalculationNode {
 	protected boolean nodePatternInclusionKnown = false;
 	BranchRateModel branchRateModel;
 
-	public void init(String Name, Tree treeModel, Alignment patterns, SiteModel siteModel,
+	public void initAndValidate(String Name, TreeInterface treeModel, Alignment patterns, SiteModelInterface siteModel,
 			BranchRateModel branchRateModel, RealParameter mu, RealParameter lam, boolean integrateGainRate) {
 		// super(Name);
 		this.treeModel = treeModel;
 		this.patterns = patterns;
 		this.mu = mu;
 		this.lam = lam;
-		this.siteModel = siteModel;
+		this.siteModel = (SiteModel) siteModel;
 		if (branchRateModel != null) {
 			this.branchRateModel = branchRateModel;
 		} else {
@@ -184,7 +179,7 @@ abstract public class AbstractObservationProcess extends CalculationNode {
 			 */
 			// likelihoodCore.calculateLogLikelihoods(nodePartials, freqs,
 			// nodeLikelihoods); // MAS Removed
-			logProb = Math.log(this.getNodeSurvivalProbability(i, this.averageRate));
+			logProb = Math.log(this.getNodeSurvivalProbability(i, averageRate));
 
 			for (j = 0; j < this.patternCount; ++j) {
 				if (this.nodePatternInclusion[i * patternCount + j]) {

@@ -30,9 +30,9 @@ import beast.core.Description;
 import beast.core.parameter.RealParameter;
 import beast.evolution.alignment.Alignment;
 import beast.evolution.branchratemodel.BranchRateModel;
-import beast.evolution.sitemodel.SiteModel;
+import beast.evolution.sitemodel.SiteModelInterface;
 import beast.evolution.tree.Node;
-import beast.evolution.tree.Tree;
+import beast.evolution.tree.TreeInterface;
 
 
 //import beast.core.*;
@@ -52,12 +52,12 @@ public class AnyTipObservationProcess extends AbstractObservationProcess {
 
     @Override
     public void initAndValidate() {
-        init(
+		initAndValidate(
                 "AnyTip",
-                treeModelInput.get(),
-                patternsInput.get(),
+				treeInput.get(),
+				dataInput.get(),
                 siteModelInput.get(),
-                branchRateModeInput.get(),
+				branchRateModelInput.get(),
                 muInput.get(),
                 (lamInput.get() == null ? new RealParameter("1.0") : lamInput.get()),
                 integrateGainRateInputInput.get());
@@ -82,9 +82,10 @@ public class AnyTipObservationProcess extends AbstractObservationProcess {
     protected double[] p;
 
     @Override
-	public void init(String modelName, Tree treeModel, Alignment patterns, SiteModel siteModel,
+	public void initAndValidate(String modelName, TreeInterface treeModel, Alignment patterns,
+			SiteModelInterface siteModel,
                                     BranchRateModel branchRateModel, RealParameter mu, RealParameter lam, boolean integrateGainRate) {
-        super.init(modelName, treeModel, patterns, siteModel, branchRateModel, mu, lam, integrateGainRate);
+		super.initAndValidate(modelName, treeModel, patterns, siteModel, branchRateModel, mu, lam, integrateGainRate);
     }
 
     @Override
@@ -128,7 +129,7 @@ public class AnyTipObservationProcess extends AbstractObservationProcess {
     }
 
 
-    private void postOrderTraversalList(Tree tree, int[] postOrderList) {
+	private void postOrderTraversalList(TreeInterface tree, int[] postOrderList) {
         int idx = nodeCount - 1;
         int cidx = nodeCount - 1;
 
