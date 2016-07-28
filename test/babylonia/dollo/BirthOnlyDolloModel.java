@@ -17,7 +17,7 @@ public class BirthOnlyDolloModel extends DolloModelTest {
 
 	public BirthOnlyDolloModel(Integer observation1, Integer observation2, Double aliveInEquilibrium,
 			Double likelihood) {
-		super(observation1, observation2, aliveInEquilibrium, 100.0, likelihood);
+		super(observation1, observation2, aliveInEquilibrium, 100.0, 1e-11, likelihood);
 	}
 
 }

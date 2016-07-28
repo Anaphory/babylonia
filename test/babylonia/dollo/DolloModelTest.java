@@ -49,11 +49,12 @@ abstract public class DolloModelTest {
 
 	private int[] observations;
 	private RealParameter lambda;
+	private RealParameter mu;
 	private Double expectedLikelihood;
 	protected AnyTipObservationProcess dollo;
 
 	public DolloModelTest(Integer observation1, Integer observation2, Double aliveInEquilibrium,
-			Double lambda, Double likelihood) {
+			Double lambda, Double mu, Double likelihood) {
 		Tree tree = new TreeParser("(A:1,B:1):1");
 		observations = new int[] { observation1, observation2 };
 		Sequence s1 = new Sequence("A", String.valueOf(observations[0]));
@@ -64,8 +65,8 @@ abstract public class DolloModelTest {
 		alignment.initByName("sequence", Arrays.asList(new Sequence[] { s1, s2 }), "userDataType", dtype);
 
 		this.lambda = new RealParameter(new Double[] { lambda });
+		this.mu = new RealParameter(new Double[] { mu });
 		RealParameter zero = new RealParameter(new Double[] { 1e-11 });
-		RealParameter one = new RealParameter(new Double[] { 1.0 });
 
 		dollo = new AnyTipObservationProcess();
 		SiteModel sites = new SiteModel();
@@ -77,7 +78,7 @@ abstract public class DolloModelTest {
 		subst.initByName("frequencies", freq, "deathprob", zero);
 		sites.initByName("shape", "1.0", "substModel", subst);
 		dollo.initByName("tree", tree, "data", alignment, "siteModel", sites, "branchRateModel", new StrictClockModel(),
-				"mu", zero, "lam", this.lambda, "integrateGainRate", true);
+				"mu", this.mu, "lam", this.lambda, "integrateGainRate", true);
 
 		expectedLikelihood = likelihood;
 	}

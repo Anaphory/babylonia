@@ -17,7 +17,7 @@ public class ConstantDolloModelTest extends DolloModelTest {
 
 	public ConstantDolloModelTest(Integer observation1, Integer observation2, Double aliveInEquilibrium,
 			Double likelihood) {
-		super(observation1, observation2, aliveInEquilibrium, 1e-11, likelihood);
+		super(observation1, observation2, aliveInEquilibrium, 1e-11, 1e-11, likelihood);
 	}
 
 }
