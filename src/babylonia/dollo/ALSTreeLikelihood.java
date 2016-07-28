@@ -34,7 +34,7 @@ import beast.evolution.sitemodel.SiteModel;
 
 
 @Description("Treelikelihood for running the Multi-State Stochastic Dollo process")
-public class ALSTreeLikelihood extends TreeLikelihood implements PartialsProvider {
+public class ALSTreeLikelihood extends TreeLikelihood {
     public Input<AbstractObservationProcess> opInput = new Input<AbstractObservationProcess>("observationprocess", "description here");
 
     protected AbstractObservationProcess observationProcess;
@@ -58,8 +58,7 @@ public class ALSTreeLikelihood extends TreeLikelihood implements PartialsProvide
         return logP;
     }
 
-	@Override
-	public void getNodePartials(int iNode, double[] fPartials) {
+	void getNodePartials(int iNode, double[] fPartials) {
 		if (beagle != null) {
 			// FIXME: Not implemented.
 			likelihoodCore.getNodePartials(iNode, fPartials);

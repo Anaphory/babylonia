@@ -158,7 +158,7 @@ public class AbstractObservationProcess extends CalculationNode {
 		return Math.log(sum);
 	}
 
-	public final double nodePatternLikelihood(double[] freqs, PartialsProvider likelihoodCore) {
+	public final double nodePatternLikelihood(double[] freqs, ALSTreeLikelihood likelihoodCore) {
 		int i, j;
 		double logL = gammaNorm;
 
