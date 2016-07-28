@@ -1,19 +1,20 @@
 /*
  * AbstractObservationProcess.java
  *
- * Copyright (C) 2002-2012 Alexei Drummond,
+ * Copyright (C) 2002-2016 Gereon Kaiping, Alexei Drummond,
  * Andrew Rambaut, Marc Suchard and Alexander V. Alekseyenko
  *
- * This file is part of BEAST.
- * See the NOTICE file distributed with this work for additional
+ * This file is part of the Beast2 package extension babylonia.
+ * See the COPYING file distributed with this work for additional
  * information regarding copyright ownership and licensing.
  *
- * BEAST is free software; you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This package (just like Beast2) is free software; you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * Lesser General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option)
+ * any later version.
  *
- * BEAST is distributed in the hope that it will be useful,
+ * The software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -214,7 +215,7 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 	protected double getAscertainmentCorrection(double[] patternProbs) {
 		double excludeProb = 0;
 		Set<Integer> excludeIndices = new HashSet<Integer>();
-	    if (patterns.isAscertained) {
+		if (patterns.isAscertained) {
 			excludeIndices = patterns.getExcludedPatternIndices();
 		}
 		for (int index : excludeIndices) {
