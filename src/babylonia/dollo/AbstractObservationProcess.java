@@ -89,7 +89,6 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 		initAndValidate("AnyTip", treeInput.get(), dataInput.get(), siteModelInput.get(), branchRateModelInput.get(),
 				muInput.get(), (lamInput.get() == null ? new RealParameter("1.0") : lamInput.get()),
 				integrateGainRateInputInput.get());
-		// abstractobservationprocess = anytipobservationprocess;
 
 		// ensure TreeLikelihood initialises the partials for tips
 		m_useAmbiguities.setValue(true, this);
@@ -98,7 +97,6 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 
 	public void initAndValidate(String Name, TreeInterface treeModel, Alignment patterns, SiteModelInterface siteModel,
 			BranchRateModel branchRateModel, RealParameter mu, RealParameter lam, boolean integrateGainRate) {
-		// super(Name);
 		this.treeModel = treeModel;
 		this.patterns = patterns;
 		this.mu = mu;
@@ -109,11 +107,6 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 		} else {
 			this.branchRateModel = new StrictClockModel();
 		}
-		// addModel(treeModel);
-		// addModel(siteModel);
-		// addModel(this.branchRateModel);
-		// addVariable(mu);
-		// addVariable(lam);
 
 		nodeCount = treeModel.getNodeCount();
 		stateCount = patterns.getDataType().getStateCount();
@@ -180,12 +173,10 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 			// get partials for node i
 			likelihoodCore.getNodePartials(i, this.nodePartials);
 			/*
-			 * multiply the partials by equilibrium probs this part could be
+			 * multiply the partials by equilibrium probs – this part could be
 			 * optimized by first summing and then multiplying by equilibrium
 			 * probs
 			 */
-			// likelihoodCore.calculateLogLikelihoods(nodePartials, freqs,
-			// nodeLikelihoods); // MAS Removed
 			logProb = Math.log(this.getNodeSurvivalProbability(i, averageRate));
 
 			for (j = 0; j < this.patternCount; ++j) {
@@ -198,8 +189,6 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 		}
 
 		double ascertainmentCorrection = this.getAscertainmentCorrection(this.cumLike);
-		// System.err.println("AscertainmentCorrection:
-		// "+ascertainmentCorrection);
 
 		for (j = 0; j < patternCount; ++j) {
 			logL += Math.log(this.cumLike[j] / ascertainmentCorrection) * this.patternWeights[j];
@@ -286,34 +275,6 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 		return true;
 	}
 
-	// protected void handleModelChangedEvent(Model model, Object object, int
-	// index) {
-	// if (model == siteModel) {
-	// averageRateKnown = false;
-	// }
-	// if (model == treeModel || model == siteModel || model == branchRateModel)
-	// {
-	// weightKnown = false;
-	// }
-	// if (model == treeModel) {
-	// if (object instanceof TreeModel.TreeChangedEvent) {
-	// if (((TreeModel.TreeChangedEvent) object).isTreeChanged()) {
-	// nodePatternInclusionKnown = false;
-	// }
-	// }
-	// }
-	// }
-	//
-	// protected final void handleVariableChangedEvent(Variable variable, int
-	// index, Parameter.ChangeType type) {
-	// if (variable == mu || variable == lam) {
-	// weightKnown = false;
-	// } else {
-	// System.err.println("AbstractObservationProcess: Got unexpected parameter
-	// changed event. (Parameter = " + variable + ")");
-	// }
-	// }
-	//
 	@Override
 	public void store() {
 		// storedAverageRate = averageRate;
