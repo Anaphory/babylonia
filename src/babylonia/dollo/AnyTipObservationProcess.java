@@ -62,6 +62,7 @@ public class AnyTipObservationProcess extends AbstractObservationProcess {
                 (lamInput.get() == null ? new RealParameter("1.0") : lamInput.get()),
                 integrateGainRateInputInput.get());
         //abstractobservationprocess = anytipobservationprocess;
+		super.initAndValidate();
     }
 
 

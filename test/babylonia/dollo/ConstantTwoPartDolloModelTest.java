@@ -31,7 +31,6 @@ public class ConstantTwoPartDolloModelTest {
 	private int[] observations;
 	private Double expectedLikelihood;
 	protected AnyTipObservationProcess dollo;
-	protected ALSTreeLikelihood als;
 
 	public ConstantTwoPartDolloModelTest(Integer observation1, Integer observation2, Double aliveInEquilibrium,
 			Double likelihood) {
@@ -47,7 +46,6 @@ public class ConstantTwoPartDolloModelTest {
 		RealParameter zero = new RealParameter(new Double[] { 1e-11 });
 		RealParameter one = new RealParameter(new Double[] { 1.0 });
 
-		als = new ALSTreeLikelihood();
 		dollo = new AnyTipObservationProcess();
 		SiteModel sites = new SiteModel();
 		MutationDeathModel subst = new MutationDeathModel();
@@ -59,8 +57,6 @@ public class ConstantTwoPartDolloModelTest {
 		sites.initByName("shape", "1.0", "substModel", subst);
 		dollo.initByName("tree", tree, "data", alignment, "siteModel", sites, "branchRateModel", new StrictClockModel(),
 				"mu", zero, "lam", zero, "integrateGainRate", true);
-		als.initByName("tree", tree, "data", alignment, "siteModel", sites, "branchRateModel", new StrictClockModel(),
-				"observationprocess", dollo);
 
 		expectedLikelihood = likelihood;
 	}
@@ -71,7 +67,7 @@ public class ConstantTwoPartDolloModelTest {
 		for (int v = 0; v < 2; ++v) {
 			for (int i = 0; i < observations.length; ++i) {
 				double[] fPartials = new double[2];
-				als.getNodePartials(i, fPartials);
+				dollo.getNodePartials(i, fPartials);
 				// NOTE: The encoding of the basic MutationDeatType is "1"→0 and
 				// "0"→1, and the frequency partials are noted in ENCODING
 				// order, not in CHARACTER order!
@@ -82,6 +78,6 @@ public class ConstantTwoPartDolloModelTest {
 
 	@Test
 	public void testCalculateLogP() {
-		assertEquals(expectedLikelihood, Math.exp(als.calculateLogP()), 1e-8);
+		assertEquals(expectedLikelihood, Math.exp(dollo.calculateLogP()), 1e-8);
 	}
 }

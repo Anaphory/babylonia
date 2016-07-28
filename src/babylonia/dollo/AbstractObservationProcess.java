@@ -153,11 +153,11 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 		return Math.log(sum);
 	}
 
-	public final double nodePatternLikelihood(double[] freqs, ALSTreeLikelihood likelihoodCore) {
+	public final double nodePatternLikelihood(double[] freqs, AbstractObservationProcess likelihoodCore) {
 		int i, j;
 		double logL = this.gammaNorm;
 
-		double birthRate = this.lam.getValue(0);
+		double birthRate = lamInput.get().getValue(0);
 		double logProb;
 		if (!this.nodePatternInclusionKnown)
 			this.setNodePatternInclusion();
@@ -323,6 +323,26 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 		boolean[] tmp = storedNodePatternInclusion;
 		storedNodePatternInclusion = nodePatternInclusion;
 		nodePatternInclusion = tmp;
+	}
+
+	@Override
+	public double calculateLogP() {
+		// Calculate the partial likelihoods
+		super.calculateLogP();
+		// get the frequency model
+		double[] freqs = ((SiteModel.Base) siteModelInput.get()).substModelInput.get().getFrequencies();
+		// let the observationProcess handle the rest
+		logP = nodePatternLikelihood(freqs, this);
+		return logP;
+	}
+
+	void getNodePartials(int iNode, double[] fPartials) {
+		if (beagle != null) {
+			// FIXME: Not implemented.
+			likelihoodCore.getNodePartials(iNode, fPartials);
+		} else {
+			likelihoodCore.getNodePartials(iNode, fPartials);
+		}
 	}
 
 	protected void acceptState() {

@@ -29,7 +29,6 @@ package babylonia.dollo;
 
 import beast.core.Description;
 import beast.core.Input;
-import beast.evolution.sitemodel.SiteModel;
 
 
 @Description("Treelikelihood for running the Multi-State Stochastic Dollo process")
@@ -45,26 +44,6 @@ public class ALSTreeLikelihood extends AbstractObservationProcess {
         m_useAmbiguities.setValue(true, this);
         super.initAndValidate();
     }
-
-    @Override
-    public double calculateLogP() {
-        // Calculate the partial likelihoods
-        super.calculateLogP();
-        // get the frequency model
-        double[] freqs = ((SiteModel.Base) siteModelInput.get()).substModelInput.get().getFrequencies();
-        // let the observationProcess handle the rest
-        logP = observationProcess.nodePatternLikelihood(freqs, this);
-        return logP;
-    }
-
-	void getNodePartials(int iNode, double[] fPartials) {
-		if (beagle != null) {
-			// FIXME: Not implemented.
-			likelihoodCore.getNodePartials(iNode, fPartials);
-		} else {
-			likelihoodCore.getNodePartials(iNode, fPartials);
-		}
-	}
 
 	@Override
 	public double calculateLogTreeWeight() {
