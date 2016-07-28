@@ -156,7 +156,6 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 		int i, j;
 		double logL = this.gammaNorm;
 
-		double birthRate = lamInput.get().getValue(0);
 		double logProb;
 		if (!this.nodePatternInclusionKnown)
 			this.setNodePatternInclusion();
@@ -199,9 +198,10 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 		double logTreeWeight = this.getLogTreeWeight();
 
 		if (integrateGainRate) {
-			logL -= gammaNorm + logN + Math.log(-logTreeWeight * deathRate / birthRate) * this.totalPatterns;
+			logL -= gammaNorm + logN
+					+ Math.log(-logTreeWeight * deathRate / lamInput.get().getValue()) * this.totalPatterns;
 		} else {
-			logL += logTreeWeight + Math.log(birthRate / deathRate) * this.totalPatterns;
+			logL += logTreeWeight + Math.log(lamInput.get().getValue() / deathRate) * this.totalPatterns;
 		}
 		return logL;
 	}
