@@ -29,7 +29,6 @@ package babylonia.dollo;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
-import java.util.Collection;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,10 +48,6 @@ import beast.util.TreeParser;
 @RunWith(Parameterized.class)
 public class DolloModelTest {
 	@Parameters
-	public static Collection<Object[]> data() {
-		return Arrays.asList(new Object[][] { { 0, 0, 0.0, 1.0 }, { 0, 1, 0.0, 0.0 }, { 1, 0, 0.0, 0.0 },
-				{ 1, 1, 0.0, 0.0 }, { 0, 0, 1.0, 0.0 }, { 0, 1, 1.0, 0.0 }, { 1, 0, 1.0, 0.0 }, { 1, 1, 1.0, 1.0 } });
-	}
 
 	private int[] observations;
 	private Double expectedLikelihood;

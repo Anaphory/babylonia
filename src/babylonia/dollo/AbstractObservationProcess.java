@@ -54,7 +54,7 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 	public Input<RealParameter> muInput = new Input<RealParameter>("mu",
 			"instantaneous per capita loss rate of the character", Validate.REQUIRED);
 	public Input<RealParameter> lamInput = new Input<RealParameter>("lam", "instantaneous rate of the Poisson process"
-			+ " over the evolutionary tree realizing the gain of characters");
+			+ " over the evolutionary tree realizing the gain of characters", new RealParameter(new Double[] { 1.0 }));
 	public Input<Boolean> integrateGainRateInputInput = new Input<Boolean>("integrateGainRate", "description here",
 			false);
 
