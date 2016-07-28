@@ -86,6 +86,11 @@ abstract public class AbstractObservationProcess extends TreeLikelihood {
 
 	@Override
 	public void initAndValidate() {
+		initAndValidate("AnyTip", treeInput.get(), dataInput.get(), siteModelInput.get(), branchRateModelInput.get(),
+				muInput.get(), (lamInput.get() == null ? new RealParameter("1.0") : lamInput.get()),
+				integrateGainRateInputInput.get());
+		// abstractobservationprocess = anytipobservationprocess;
+
 		// ensure TreeLikelihood initialises the partials for tips
 		m_useAmbiguities.setValue(true, this);
 		super.initAndValidate();

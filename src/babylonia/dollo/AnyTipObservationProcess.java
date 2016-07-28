@@ -51,20 +51,6 @@ public class AnyTipObservationProcess extends AbstractObservationProcess {
     //dr.evomodel.MSSD.AnyTipObservationProcess anytipobservationprocess;
 
 
-    @Override
-    public void initAndValidate() {
-		initAndValidate(
-                "AnyTip",
-				treeInput.get(),
-				dataInput.get(),
-                siteModelInput.get(),
-				branchRateModelInput.get(),
-                muInput.get(),
-                (lamInput.get() == null ? new RealParameter("1.0") : lamInput.get()),
-                integrateGainRateInputInput.get());
-        //abstractobservationprocess = anytipobservationprocess;
-		super.initAndValidate();
-    }
 
 
 //    double calculateLogTreeWeight() {
