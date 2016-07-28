@@ -43,13 +43,12 @@ import beast.evolution.tree.Node;
 import beast.evolution.tree.Tree;
 import beast.math.GammaFunction;
 
-// FIXME SHOULD THIS NOT BE AN INTERFACE??
 @Description("Abstract Observation Process defines how the integration of gain events is done along the tree."
 		+ "Specific instances should define how the data is collected.")
 @Citation("Alekseyenko, AV., Lee, CJ., Suchard, MA. Wagner and Dollo: a stochastic duet"
 		+ "by composing two parsimonious solos. Systematic Biology 2008 57(5): 772 - 784; doi:"
 		+ "10.1080/10635150802434394. PMID: 18853363")
-public class AbstractObservationProcess extends CalculationNode {
+abstract public class AbstractObservationProcess extends CalculationNode {
 	// Input<String> Name = new Input<String>("Name", "description here");
 	public Input<Tree> treeModelInput = new Input<Tree>("tree", "description here", Validate.REQUIRED);
 	public Input<Alignment> patternsInput = new Input<Alignment>("data", "description here", Validate.REQUIRED);
@@ -160,24 +159,24 @@ public class AbstractObservationProcess extends CalculationNode {
 
 	public final double nodePatternLikelihood(double[] freqs, ALSTreeLikelihood likelihoodCore) {
 		int i, j;
-		double logL = gammaNorm;
+		double logL = this.gammaNorm;
 
-		double birthRate = lam.getValue(0);
+		double birthRate = this.lam.getValue(0);
 		double logProb;
-		if (!nodePatternInclusionKnown)
-			setNodePatternInclusion();
-		if (nodePartials == null) {
-			nodePartials = new double[patternCount * stateCount];
+		if (!this.nodePatternInclusionKnown)
+			this.setNodePatternInclusion();
+		if (this.nodePartials == null) {
+			this.nodePartials = new double[this.patternCount * this.stateCount];
 		}
 
-		double averageRate = getAverageRate();
+		double averageRate = this.getAverageRate();
 
 		for (j = 0; j < patternCount; ++j)
-			cumLike[j] = 0;
+			this.cumLike[j] = 0;
 
 		for (i = 0; i < nodeCount; ++i) {
 			// get partials for node i
-			likelihoodCore.getNodePartials(i, nodePartials);
+			likelihoodCore.getNodePartials(i, this.nodePartials);
 			/*
 			 * multiply the partials by equilibrium probs this part could be
 			 * optimized by first summing and then multiplying by equilibrium
@@ -185,33 +184,33 @@ public class AbstractObservationProcess extends CalculationNode {
 			 */
 			// likelihoodCore.calculateLogLikelihoods(nodePartials, freqs,
 			// nodeLikelihoods); // MAS Removed
-			logProb = Math.log(getNodeSurvivalProbability(i, averageRate));
+			logProb = Math.log(this.getNodeSurvivalProbability(i, this.averageRate));
 
-			for (j = 0; j < patternCount; ++j) {
-				if (nodePatternInclusion[i * patternCount + j]) {
+			for (j = 0; j < this.patternCount; ++j) {
+				if (this.nodePatternInclusion[i * patternCount + j]) {
 					// cumLike[j] += Math.exp(nodeLikelihoods[j] + logProb); //
 					// MAS Replaced with line below
-					cumLike[j] += Math.exp(calculateSiteLogLikelihood(j, nodePartials, freqs) + logProb);
+					cumLike[j] += Math.exp(this.calculateSiteLogLikelihood(j, this.nodePartials, freqs) + logProb);
 				}
 			}
 		}
 
-		double ascertainmentCorrection = getAscertainmentCorrection(cumLike);
+		double ascertainmentCorrection = this.getAscertainmentCorrection(this.cumLike);
 		// System.err.println("AscertainmentCorrection:
 		// "+ascertainmentCorrection);
 
 		for (j = 0; j < patternCount; ++j) {
-			logL += Math.log(cumLike[j] / ascertainmentCorrection) * patternWeights[j];
+			logL += Math.log(this.cumLike[j] / ascertainmentCorrection) * this.patternWeights[j];
 		}
 
-		double deathRate = mu.getValue(0);
+		double deathRate = this.mu.getValue(0);
 
-		double logTreeWeight = getLogTreeWeight();
+		double logTreeWeight = this.getLogTreeWeight();
 
 		if (integrateGainRate) {
-			logL -= gammaNorm + logN + Math.log(-logTreeWeight * deathRate / birthRate) * totalPatterns;
+			logL -= gammaNorm + logN + Math.log(-logTreeWeight * deathRate / birthRate) * this.totalPatterns;
 		} else {
-			logL += logTreeWeight + Math.log(birthRate / deathRate) * totalPatterns;
+			logL += logTreeWeight + Math.log(birthRate / deathRate) * this.totalPatterns;
 		}
 		return logL;
 	}
@@ -229,22 +228,17 @@ public class AbstractObservationProcess extends CalculationNode {
 	}
 
 	final public double getLogTreeWeight() {
-		if (!weightKnown) {
-			logTreeWeight = calculateLogTreeWeight();
-			weightKnown = true;
+		if (!this.weightKnown) {
+			this.logTreeWeight = this.calculateLogTreeWeight();
+			this.weightKnown = true;
 		}
 
-		return logTreeWeight;
+		return this.logTreeWeight;
 	}
 
-	// should override this method
-	public double calculateLogTreeWeight() {
-		return Double.NEGATIVE_INFINITY;
-	}
+	abstract public double calculateLogTreeWeight();
 
-	// should override this method
-	void setNodePatternInclusion() {
-	}
+	abstract void setNodePatternInclusion();
 
 	final public double getAverageRate() {
 		if (!averageRateKnown) {
