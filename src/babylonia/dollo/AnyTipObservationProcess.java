@@ -105,7 +105,7 @@ public class AnyTipObservationProcess extends AbstractObservationProcess {
             p[i] = 1.0 - getNodeSurvivalProbability(i, averageRate);
         }
 
-        /*Tree.Utils.*/postOrderTraversalList(treeModel, postOrderNodeList);
+		postOrderNodeList = postOrderTraversalList(treeModel);
 
         for (int postOrderIndex = 0; postOrderIndex < nodeCount; postOrderIndex++) {
 
@@ -128,10 +128,11 @@ public class AnyTipObservationProcess extends AbstractObservationProcess {
         return -logWeight * lam.getValue(0) / (getAverageRate() * mu.getValue(0));
     }
 
-    private void postOrderTraversalList(TreeInterface tree, int[] postOrderList) {
+	private int[] postOrderTraversalList(TreeInterface tree) {
         int idx = nodeCount - 1;
         int cidx = nodeCount - 1;
 
+		int[] postOrderList = new int[nodeCount];
         postOrderList[idx] = tree.getRoot().getNr();
 
         while (cidx > 0) {
@@ -142,6 +143,7 @@ public class AnyTipObservationProcess extends AbstractObservationProcess {
             }
             idx -= 1;
         }
+		return postOrderList;
 	}
 
 	public void setTipNodePatternInclusion() { // These values never change
@@ -190,7 +192,7 @@ public class AnyTipObservationProcess extends AbstractObservationProcess {
         }
 
         // Determine post-order traversal
-        /*Tree.Utils.*/postOrderTraversalList(treeModel, postOrderNodeList);
+		postOrderNodeList = postOrderTraversalList(treeModel);
 
         // Do post-order traversal
         // Do post-order traversal
