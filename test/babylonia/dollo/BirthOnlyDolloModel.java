@@ -11,8 +11,8 @@ import org.junit.runners.Parameterized.Parameters;
 public class BirthOnlyDolloModel extends DolloModelTest {
 	@Parameters
 	public static Collection<Object[]> data() {
-		return Arrays.asList(new Object[][] { { 0, 0, 0.0, 0.25 }, { 0, 1, 0.0, 0.25 }, { 1, 0, 0.0, 0.25 },
-				{ 1, 1, 0.0, 0.25 }, { 0, 0, 1.0, 0.0 }, { 0, 1, 1.0, 0.0 }, { 1, 0, 1.0, 0.0 }, { 1, 1, 1.0, 1.0 } });
+		return Arrays.asList(new Object[][] { { 0, 0, 0.0, 0.0 }, { 0, 1, 0.0, 0.0 }, { 1, 0, 0.0, 0.0 },
+				{ 1, 1, 0.0, 1.0 }, { 0, 0, 1.0, 0.0 }, { 0, 1, 1.0, 0.0 }, { 1, 0, 1.0, 0.0 }, { 1, 1, 1.0, 1.0 } });
 	}
 
 	public BirthOnlyDolloModel(Integer observation1, Integer observation2, Double aliveInEquilibrium,
