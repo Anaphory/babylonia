@@ -53,8 +53,8 @@ abstract public class DolloModelTest {
 	private Double expectedLikelihood;
 	protected AnyTipObservationProcess dollo;
 
-	public DolloModelTest(Integer observation1, Integer observation2, Double aliveInEquilibrium,
-			Double lambda, Double mu, Double likelihood) {
+	public DolloModelTest(Integer observation1, Integer observation2, Double aliveInEquilibrium, Double lambda,
+			Double mu, Double likelihood) {
 		Tree tree = new TreeParser("(A:1,B:1):1");
 		observations = new int[] { observation1, observation2 };
 		Sequence s1 = new Sequence("A", String.valueOf(observations[0]));
@@ -74,7 +74,9 @@ abstract public class DolloModelTest {
 		// NOTE: The encoding of the basic MutationDeatType is "1"→0 and
 		// "0"→1, and the frequencies are noted in ENCODING order, not in
 		// CHARACTER order!
-		Frequencies freq = new Frequencies(new Double[] { aliveInEquilibrium, 1.0 - aliveInEquilibrium });
+		Frequencies freq = new Frequencies();
+		freq.initByName("frequencies",
+				new RealParameter(new Double[] { aliveInEquilibrium, 1.0 - aliveInEquilibrium }));
 		subst.initByName("frequencies", freq, "deathprob", zero);
 		sites.initByName("shape", "1.0", "substModel", subst);
 		dollo.initByName("tree", tree, "data", alignment, "siteModel", sites, "branchRateModel", new StrictClockModel(),

@@ -13,12 +13,12 @@ public class LossOnlyDolloModel extends DolloModelTest {
 	public static Collection<Object[]> data() {
 		return Arrays
 				.asList(new Object[][] { { 0, 0, 0.0, 1.0 }, { 0, 1, 0.0, 0.0 }, { 1, 0, 0.0, 0.0 }, { 1, 1, 0.0, 0.0 },
-						{ 0, 0, 1.0, 0.25 }, { 0, 1, 1.0, 0.25 }, { 1, 0, 1.0, 0.25 }, { 1, 1, 1.0, 0.25 } });
+						{ 0, 0, 1.0, 1.0 }, { 0, 1, 1.0, 0.0 }, { 1, 0, 1.0, 0.0 }, { 1, 1, 1.0, 0.0 } });
 	}
 
 	public LossOnlyDolloModel(Integer observation1, Integer observation2, Double aliveInEquilibrium,
 			Double likelihood) {
-		super(observation1, observation2, aliveInEquilibrium, 1e-11, 100.0, likelihood);
+		super(observation1, observation2, aliveInEquilibrium, 1e-11, 1e11, likelihood);
 	}
 
 }
